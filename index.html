@@ -10,6 +10,11 @@
 	 crossorigin="anonymous"></script>
 	<script src="/socket.io/socket.io.js"></script>
 	<title>Chat SocketIO</title>
+	<style>
+		.l-display-none {
+			display: none;
+		}
+	</style>
 </head>
 
 <body>
@@ -27,7 +32,7 @@
 				</form>
 			</div>
 		</div>
-		<div id="messageArea" class="row">
+		<div id="messageArea" class="row l-display-none">
 			<div class="col-sm-4">
 				<div class="well">
 					<h2>Online Users</h2>
@@ -67,14 +72,15 @@
 			});
 
 			socket.on('new message', (data) => {
-				var $container = `<div class="well"><b>${data.user}</b> ${data.msg}</div>`;
+				var $container = `<div class="well"><b>${data.user}:</b> ${data.msg}</div>`;
 				$chat.append($container);
 			});
 
 			$userForm.submit((e) => {
 				e.preventDefault();
 				socket.emit('new user', $userName.val(), (data) => {
-					
+					$('#userFormArea').hide();
+					$messageArea.show();
 				});
 				$userName.val('');
 			});
